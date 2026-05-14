@@ -56,11 +56,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return { error: error?.message ?? null };
     },
     async signUp(email, password, p) {
-      const redirectTo = typeof window !== "undefined" ? window.location.origin : undefined;
+      // Do not set emailRedirectTo here: GoTrue validates it against the project's redirect allow list.
+      // A missing entry causes errors like "Invalid path specified in request URL". Confirmation links
+      // use the Site URL from Supabase Dashboard → Authentication → URL Configuration.
       const { error } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: redirectTo, data: p },
+        options: { data: p },
       });
       return { error: error?.message ?? null };
     },

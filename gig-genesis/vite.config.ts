@@ -6,6 +6,7 @@ import { nitro } from "nitro/vite";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { defineConfig, loadEnv, mergeConfig } from "vite";
 import type { PluginOption } from "vite";
+import { normalizeSupabaseProjectUrl } from "./src/integrations/supabase/normalizeProjectUrl";
 
 export default defineConfig(({ mode }) => {
   const plugins: PluginOption[] = [
@@ -27,18 +28,20 @@ export default defineConfig(({ mode }) => {
   const envDefine: Record<string, string> = {};
   const loadedEnv = loadEnv(mode, process.cwd(), "VITE_");
   for (const [key, value] of Object.entries(loadedEnv)) {
+    // Filled below so we always normalize URL (Vercel often sets only VITE_* or includes /rest/v1).
+    if (key === "VITE_SUPABASE_URL" || key === "VITE_SUPABASE_PUBLISHABLE_KEY") continue;
     envDefine[`import.meta.env.${key}`] = JSON.stringify(value);
   }
 
-  // Expose Supabase URL + anon key to the client from SUPABASE_* only (no duplicate VITE_* in .env).
   const supabaseEnv = loadEnv(mode, process.cwd(), "SUPABASE_");
-  if (supabaseEnv.SUPABASE_URL) {
-    envDefine["import.meta.env.VITE_SUPABASE_URL"] = JSON.stringify(supabaseEnv.SUPABASE_URL);
+  const rawUrl = supabaseEnv.SUPABASE_URL ?? loadedEnv.VITE_SUPABASE_URL;
+  const rawKey = supabaseEnv.SUPABASE_PUBLISHABLE_KEY ?? loadedEnv.VITE_SUPABASE_PUBLISHABLE_KEY;
+  if (rawUrl) {
+    envDefine["import.meta.env.VITE_SUPABASE_URL"] = JSON.stringify(normalizeSupabaseProjectUrl(rawUrl));
   }
-  if (supabaseEnv.SUPABASE_PUBLISHABLE_KEY) {
-    envDefine["import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY"] = JSON.stringify(
-      supabaseEnv.SUPABASE_PUBLISHABLE_KEY,
-    );
+  if (rawKey) {
+    const k = String(rawKey).trim().replace(/^["']|["']$/g, "");
+    envDefine["import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY"] = JSON.stringify(k);
   }
 
   return mergeConfig(
