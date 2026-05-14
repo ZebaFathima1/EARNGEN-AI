@@ -30,6 +30,17 @@ export default defineConfig(({ mode }) => {
     envDefine[`import.meta.env.${key}`] = JSON.stringify(value);
   }
 
+  // Expose Supabase URL + anon key to the client from SUPABASE_* only (no duplicate VITE_* in .env).
+  const supabaseEnv = loadEnv(mode, process.cwd(), "SUPABASE_");
+  if (supabaseEnv.SUPABASE_URL) {
+    envDefine["import.meta.env.VITE_SUPABASE_URL"] = JSON.stringify(supabaseEnv.SUPABASE_URL);
+  }
+  if (supabaseEnv.SUPABASE_PUBLISHABLE_KEY) {
+    envDefine["import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY"] = JSON.stringify(
+      supabaseEnv.SUPABASE_PUBLISHABLE_KEY,
+    );
+  }
+
   return mergeConfig(
     {
       define: envDefine,
