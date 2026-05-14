@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useAppState, totalEarned } from "@/lib/store";
 import { useDisplayUser } from "@/lib/useDisplayUser";
 import { generatePoWSummary } from "@/lib/ai";
@@ -25,9 +25,20 @@ function PublicProfile() {
   return (
     <div className="min-h-screen bg-background">
       <div className="border-b border-border bg-card">
-        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-          <span className="font-semibold tracking-tight text-brand">EARNGEN-AI<span className="text-foreground">.</span></span>
-          <span className="text-xs text-muted-foreground">Public Profile · @{username}</span>
+        <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <Link
+              to="/"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground shrink-0"
+            >
+              ← Back
+            </Link>
+            <span className="h-4 w-px bg-border shrink-0" aria-hidden />
+            <span className="font-semibold tracking-tight text-brand truncate">
+              EARNGEN-AI<span className="text-foreground">.</span>
+            </span>
+          </div>
+          <span className="text-xs text-muted-foreground shrink-0">Public Profile · @{username}</span>
         </div>
       </div>
 
@@ -98,7 +109,10 @@ function PublicProfile() {
           </div>
         </section>
 
-        <footer className="mt-12 pt-8 border-t border-border text-center">
+        <footer className="mt-12 pt-8 border-t border-border flex flex-col items-center gap-3">
+          <Link to="/" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+            ← Back to landing
+          </Link>
           <p className="text-xs text-muted-foreground">Verified earner profile · skillsync.io/r/{username}</p>
         </footer>
       </div>
