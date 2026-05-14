@@ -36,7 +36,7 @@ const signUpSchema = z.object({
 });
 
 function AuthPage() {
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, signUp, user, resendSignupConfirmation } = useAuth();
   const navigate = useNavigate();
   const { next } = useSearch({ from: "/auth" });
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -44,6 +44,7 @@ function AuthPage() {
   const [err, setErr] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [needsEmailConfirmation, setNeedsEmailConfirmation] = useState(false);
 
   const destination = safePostAuthPath(next);
 
@@ -60,9 +61,19 @@ function AuthPage() {
       if (mode === "signin") {
         const parsed = signInSchema.safeParse(form);
         if (!parsed.success) { setErr(parsed.error.issues[0].message); return; }
-        const { error } = await signIn(parsed.data.email, parsed.data.password);
-        if (error) setErr(error);
-        else navigate({ to: destination });
+        setNeedsEmailConfirmation(false);
+        const { error, code } = await signIn(parsed.data.email, parsed.data.password);
+        if (error) {
+          const unconfirmed =
+            code === "email_not_confirmed" ||
+            error.toLowerCase().includes("email not confirmed");
+          setNeedsEmailConfirmation(unconfirmed);
+          setErr(
+            unconfirmed
+              ? "This account was created while email confirmation was required. It stays unconfirmed until you use the link in your email, or an admin confirms it in Supabase."
+              : error,
+          );
+        } else navigate({ to: destination });
       } else {
         const parsed = signUpSchema.safeParse(form);
         if (!parsed.success) { setErr(parsed.error.issues[0].message); return; }
@@ -90,11 +101,11 @@ function AuthPage() {
 
         <div className="rounded-2xl bg-card ring-1 ring-border p-6">
           <div className="grid grid-cols-2 gap-1 p-1 bg-muted rounded-lg mb-6">
-            <button type="button" onClick={() => { setMode("signin"); setErr(null); setMsg(null); }}
+            <button type="button" onClick={() => { setMode("signin"); setErr(null); setMsg(null); setNeedsEmailConfirmation(false); }}
               className={"py-2 text-sm font-medium rounded-md transition " + (mode === "signin" ? "bg-background shadow-sm" : "text-muted-foreground")}>
               Sign in
             </button>
-            <button type="button" onClick={() => { setMode("signup"); setErr(null); setMsg(null); }}
+            <button type="button" onClick={() => { setMode("signup"); setErr(null); setMsg(null); setNeedsEmailConfirmation(false); }}
               className={"py-2 text-sm font-medium rounded-md transition " + (mode === "signup" ? "bg-background shadow-sm" : "text-muted-foreground")}>
               Sign up
             </button>
@@ -112,6 +123,35 @@ function AuthPage() {
             <Field label="Password" type="password" value={form.password} onChange={(v) => setForm({ ...form, password: v })} placeholder="••••••••" />
 
             {err && <p className="text-sm text-red-500">{err}</p>}
+            {needsEmailConfirmation && mode === "signin" && (
+              <div className="rounded-lg border border-border bg-muted/40 px-3 py-2 text-xs text-muted-foreground space-y-2">
+                <p>
+                  Turning off "Confirm email" in Supabase only applies to <span className="font-medium text-foreground">new</span> signups. Your user row may still have an unconfirmed email from before.
+                </p>
+                <p className="text-foreground/90">
+                  Fix: Supabase Dashboard → Authentication → Users → select your user → confirm the email, or delete the user and sign up again.
+                </p>
+                <button
+                  type="button"
+                  disabled={busy || !form.email.trim()}
+                  onClick={async () => {
+                    setErr(null);
+                    setMsg(null);
+                    setBusy(true);
+                    try {
+                      const { error: rErr } = await resendSignupConfirmation(form.email.trim());
+                      if (rErr) setErr(rErr);
+                      else setMsg("If this project sends confirmation emails, check your inbox (and spam) for the link.");
+                    } finally {
+                      setBusy(false);
+                    }
+                  }}
+                  className="text-xs font-medium text-brand underline-offset-2 hover:underline disabled:opacity-50"
+                >
+                  Resend confirmation email
+                </button>
+              </div>
+            )}
             {msg && <p className="text-sm text-emerald-600">{msg}</p>}
 
             <button type="submit" disabled={busy}

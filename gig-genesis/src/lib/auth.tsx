@@ -9,8 +9,9 @@ type AuthCtx = {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>;
+  signIn: (email: string, password: string) => Promise<{ error: string | null; code?: string }>;
   signUp: (email: string, password: string, profile: Profile) => Promise<{ error: string | null }>;
+  resendSignupConfirmation: (email: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
 };
 
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loading,
     async signIn(email, password) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
-      return { error: error?.message ?? null };
+      return { error: error?.message ?? null, code: error?.code };
     },
     async signUp(email, password, p) {
       // Do not set emailRedirectTo here: GoTrue validates it against the project's redirect allow list.
@@ -64,6 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         password,
         options: { data: p },
       });
+      return { error: error?.message ?? null };
+    },
+    async resendSignupConfirmation(email) {
+      const { error } = await supabase.auth.resend({ type: "signup", email });
       return { error: error?.message ?? null };
     },
     async signOut() {
