@@ -12,7 +12,7 @@ export function useDisplayUser() {
 
   if (user) {
     const name =
-      (profile?.name && profile.name.trim()) ||
+      (profile?.full_name && profile.full_name.trim()) ||
       user.email?.split("@")[0] ||
       "Member";
     return {

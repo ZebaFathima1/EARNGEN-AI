@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { supabase } from "@/integrations/supabase/client";
 import type { Session, User } from "@supabase/supabase-js";
 
-export type Profile = { name: string; college: string; city: string };
+export type Profile = { full_name: string | null; college: string | null; city: string | null };
 
 type AuthCtx = {
   user: User | null;
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function fetchProfile(id: string) {
-    const { data } = await supabase.from("profiles").select("name,college,city").eq("id", id).maybeSingle();
+    const { data } = await supabase.from("profiles").select("full_name,college,city").eq("id", id).maybeSingle();
     if (data) setProfile(data as Profile);
   }
 
@@ -84,6 +84,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async updateProfile(data) {
       const id = session?.user?.id;
       if (!id) return { error: "Not signed in" };
+      // Map full_name → DB column name; keep other fields as-is
       const { error } = await supabase
         .from("profiles")
         .upsert({ id, ...data });

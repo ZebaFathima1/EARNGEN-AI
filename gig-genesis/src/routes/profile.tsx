@@ -17,7 +17,7 @@ export const Route = createFileRoute("/profile")({
 
 function ProfilePage() {
   const { user, profile, avatarUrl, updateProfile, uploadAvatar, loading } = useAuth();
-  const [form, setForm] = useState({ name: "", college: "", city: "" });
+  const [form, setForm] = useState({ full_name: "", college: "", city: "" });
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errMsg, setErrMsg] = useState<string | null>(null);
@@ -30,23 +30,23 @@ function ProfilePage() {
   useEffect(() => {
     if (profile) {
       setForm({
-        name: profile.name ?? "",
+        full_name: profile.full_name ?? "",
         college: profile.college ?? "",
         city: profile.city ?? "",
       });
     }
   }, [profile]);
 
-  const initial = (profile?.name || user?.email || "?").charAt(0).toUpperCase();
+  const initial = (profile?.full_name || user?.email || "?").charAt(0).toUpperCase();
 
-  async function handleSave(e: React.FormEvent) {
+    async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim()) return;
+    if (!form.full_name.trim()) return;
     setBusy(true);
     setStatus("idle");
     setErrMsg(null);
     const { error } = await updateProfile({
-      name: form.name.trim(),
+      full_name: form.full_name.trim(),
       college: form.college.trim(),
       city: form.city.trim(),
     });
@@ -144,7 +144,7 @@ function ProfilePage() {
             </p>
 
             <div>
-              <p className="text-lg font-semibold">{profile?.name || "—"}</p>
+              <p className="text-lg font-semibold">{profile?.full_name || "—"}</p>
               <p className="text-sm text-muted-foreground">{user?.email}</p>
             </div>
             {profile?.college && (
@@ -186,10 +186,10 @@ function ProfilePage() {
               <ProfileField
                 icon={<User className="size-4 text-muted-foreground" />}
                 label="Full name"
-                value={form.name}
+                value={form.full_name}
                 placeholder="Priya Sharma"
                 required
-                onChange={(v) => setForm((f) => ({ ...f, name: v }))}
+                onChange={(v) => setForm((f) => ({ ...f, full_name: v }))}
               />
               <ProfileField
                 icon={<GraduationCap className="size-4 text-muted-foreground" />}
@@ -221,7 +221,7 @@ function ProfilePage() {
 
               <button
                 type="submit"
-                disabled={busy || !form.name.trim()}
+                disabled={busy || !form.full_name.trim()}
                 className="mt-2 rounded-lg bg-foreground text-background px-5 py-2.5 text-sm font-semibold disabled:opacity-50 hover:opacity-90 transition-opacity"
               >
                 {busy ? "Saving…" : "Save changes"}

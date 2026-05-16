@@ -78,7 +78,7 @@ function AuthPage() {
         const parsed = signUpSchema.safeParse(form);
         if (!parsed.success) { setErr(parsed.error.issues[0].message); return; }
         const { error } = await signUp(parsed.data.email, parsed.data.password, {
-          name: parsed.data.name, college: parsed.data.college, city: parsed.data.city,
+          full_name: parsed.data.name, college: parsed.data.college, city: parsed.data.city,
         });
         if (error) setErr(error);
         else { setMsg("Account created! Redirecting…"); navigate({ to: destination }); }

@@ -20,7 +20,7 @@ export function Shell({ children }: { children?: ReactNode }) {
   const { user, profile, avatarUrl, signOut, loading } = useAuth();
   const navigate = useNavigate();
 
-  const initial = (profile?.name || user?.email || "?").charAt(0).toUpperCase();
+  const initial = (profile?.full_name || user?.email || "?").charAt(0).toUpperCase();
   const homeHref = user ? "/speak-with-ai" : "/";
 
   async function handleSignOut() {
@@ -78,7 +78,7 @@ export function Shell({ children }: { children?: ReactNode }) {
                       : initial}
                   </div>
                   <span className="text-xs font-medium text-muted-foreground hidden md:inline">
-                    {profile?.name || user.email}
+                    {profile?.full_name || user.email}
                   </span>
                 </Link>
                 <button
@@ -134,7 +134,7 @@ export function Shell({ children }: { children?: ReactNode }) {
                   onClick={handleSignOut}
                   className="px-3 py-2 rounded-lg text-sm font-semibold text-left text-muted-foreground hover:bg-muted"
                 >
-                  Sign out ({profile?.name || user.email})
+                  Sign out ({profile?.full_name || user.email})
                 </button>
               ) : (
                 <Link
