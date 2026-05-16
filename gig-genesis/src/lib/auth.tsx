@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!id) return { error: "Not signed in" };
       const { error } = await supabase
         .from("profiles")
-        .upsert({ id, ...data, updated_at: new Date().toISOString() });
+        .upsert({ id, ...data });
       if (!error) {
         setProfile((prev) => prev ? { ...prev, ...data } : (data as Profile));
       }
