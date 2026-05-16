@@ -11,12 +11,13 @@ const NAV_AUTH = [
   { to: "/sprint", label: "7-Day Sprint" },
   { to: "/income", label: "Income" },
   { to: "/proof", label: "Proof-of-Work" },
+  { to: "/profile", label: "Profile" },
 ] as const;
 
 export function Shell({ children }: { children?: ReactNode }) {
   const path = useRouterState({ select: (r) => r.location.pathname });
   const [open, setOpen] = useState(false);
-  const { user, profile, signOut, loading } = useAuth();
+  const { user, profile, avatarUrl, signOut, loading } = useAuth();
   const navigate = useNavigate();
 
   const initial = (profile?.name || user?.email || "?").charAt(0).toUpperCase();
@@ -42,7 +43,7 @@ export function Shell({ children }: { children?: ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-8">
             <Link to={homeHref} className="font-semibold tracking-tight text-lg text-brand inline-flex items-center gap-2">
-              <img src={logoUrl} alt="EARNGEN-AI logo" width={28} height={28} className="size-7" />
+              <img src={logoUrl} alt="EARNGEN-AI logo" width={40} height={40} className="size-10" />
               <span>
                 EARNGEN<span className="text-foreground">-AI</span>
               </span>
@@ -70,14 +71,16 @@ export function Shell({ children }: { children?: ReactNode }) {
           <div className="flex items-center gap-3">
             {user ? (
               <>
-                <div className="hidden sm:flex items-center gap-2">
-                  <div className="size-8 rounded-full bg-gradient-to-br from-brand to-brand-light grid place-items-center text-xs text-white font-semibold">
-                    {initial}
+                <Link to="/profile" className="hidden sm:flex items-center gap-2 hover:opacity-80 transition-opacity">
+                  <div className="size-8 rounded-full bg-gradient-to-br from-brand to-brand-light overflow-hidden grid place-items-center text-xs text-white font-semibold shrink-0">
+                    {avatarUrl
+                      ? <img src={avatarUrl} alt="avatar" className="size-full object-cover" />
+                      : initial}
                   </div>
                   <span className="text-xs font-medium text-muted-foreground hidden md:inline">
                     {profile?.name || user.email}
                   </span>
-                </div>
+                </Link>
                 <button
                   onClick={handleSignOut}
                   className="hidden md:inline-flex text-xs font-semibold tracking-wide uppercase text-muted-foreground hover:text-foreground"
@@ -153,7 +156,7 @@ export function Shell({ children }: { children?: ReactNode }) {
         <div className="flex flex-col md:flex-row justify-between gap-8">
           <div className="max-w-[42ch]">
             <p className="text-sm font-semibold mb-2 inline-flex items-center gap-2">
-              <img src={logoUrl} alt="" width={20} height={20} className="size-5" loading="lazy" />
+              <img src={logoUrl} alt="" width={24} height={24} className="size-6" loading="lazy" />
               EARNGEN-AI
             </p>
             <p className="text-sm text-muted-foreground text-pretty">

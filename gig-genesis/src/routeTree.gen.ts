@@ -13,6 +13,7 @@ import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as SpeakWithAiRouteImport } from './routes/speak-with-ai'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProofRouteImport } from './routes/proof'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as IncomeRouteImport } from './routes/income'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -38,6 +39,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const ProofRoute = ProofRouteImport.update({
   id: '/proof',
   path: '/proof',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpportunitiesRoute = OpportunitiesRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/income': typeof IncomeRoute
   '/opportunities': typeof OpportunitiesRoute
+  '/profile': typeof ProfileRoute
   '/proof': typeof ProofRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/speak-with-ai': typeof SpeakWithAiRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/income': typeof IncomeRoute
   '/opportunities': typeof OpportunitiesRoute
+  '/profile': typeof ProfileRoute
   '/proof': typeof ProofRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/speak-with-ai': typeof SpeakWithAiRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/income': typeof IncomeRoute
   '/opportunities': typeof OpportunitiesRoute
+  '/profile': typeof ProfileRoute
   '/proof': typeof ProofRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/speak-with-ai': typeof SpeakWithAiRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/income'
     | '/opportunities'
+    | '/profile'
     | '/proof'
     | '/sitemap.xml'
     | '/speak-with-ai'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/income'
     | '/opportunities'
+    | '/profile'
     | '/proof'
     | '/sitemap.xml'
     | '/speak-with-ai'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/income'
     | '/opportunities'
+    | '/profile'
     | '/proof'
     | '/sitemap.xml'
     | '/speak-with-ai'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   IncomeRoute: typeof IncomeRoute
   OpportunitiesRoute: typeof OpportunitiesRoute
+  ProfileRoute: typeof ProfileRoute
   ProofRoute: typeof ProofRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SpeakWithAiRoute: typeof SpeakWithAiRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/proof'
       fullPath: '/proof'
       preLoaderRoute: typeof ProofRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/opportunities': {
@@ -241,6 +261,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   IncomeRoute: IncomeRoute,
   OpportunitiesRoute: OpportunitiesRoute,
+  ProfileRoute: ProfileRoute,
   ProofRoute: ProofRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SpeakWithAiRoute: SpeakWithAiRoute,
