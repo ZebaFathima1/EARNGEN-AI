@@ -124,7 +124,7 @@ export function EventDiscoveryHub() {
         </div>
       ) : null}
 
-      <div className="scroll-x-mobile flex flex-nowrap gap-2 mb-4 border-b border-border pb-2">
+      <div className="flex gap-2 mb-4 border-b border-border pb-2">
         {(
           [
             { id: "events" as const, label: "Live events", icon: Sparkles },
@@ -137,7 +137,7 @@ export function EventDiscoveryHub() {
             type="button"
             onClick={() => setTab(id)}
             className={cn(
-              "flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition shrink-0",
+              "flex items-center gap-1.5 px-3 py-2 text-sm font-semibold rounded-lg transition",
               tab === id ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground",
             )}
           >
@@ -169,14 +169,14 @@ export function EventDiscoveryHub() {
             </p>
           ) : null}
 
-          <div className="scroll-x-mobile flex flex-nowrap sm:flex-wrap gap-2 mb-6 pb-1">
+          <div className="flex flex-wrap gap-2 mb-6">
             {FILTERS.map((f) => (
               <button
                 key={f.id}
                 type="button"
                 onClick={() => setFilter(f.id)}
                 className={cn(
-                  "text-xs font-semibold rounded-full px-3 py-1.5 ring-1 transition shrink-0",
+                  "text-xs font-semibold rounded-full px-3 py-1.5 ring-1 transition",
                   filter === f.id ? "bg-brand text-brand-foreground ring-brand" : "ring-border hover:ring-brand/30",
                 )}
               >

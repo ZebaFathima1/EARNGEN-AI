@@ -71,9 +71,9 @@ function Opportunities() {
   return (
     <Shell>
       <RequireAuth>
-        <header className="mb-6 sm:mb-8 fade-up">
+        <header className="mb-8 fade-up">
           <p className="text-sm text-brand font-semibold uppercase tracking-wider">AI Opportunity OS</p>
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mt-2 text-pretty">
+          <h1 className="text-3xl font-semibold tracking-tight mt-2">
             {plan ? plan.headline : "Income opportunities for your stack"}
           </h1>
           <p className="text-muted-foreground mt-2 text-pretty max-w-2xl">
@@ -117,14 +117,14 @@ function Opportunities() {
           </Card>
         ) : (
           <>
-            <div className="scroll-x-mobile flex flex-nowrap sm:flex-wrap gap-2 mb-6 pb-1">
+            <div className="flex flex-wrap gap-2 mb-6">
               {FILTERS.map((f) => (
                 <button
                   key={f.id}
                   type="button"
                   onClick={() => setFilter(f.id)}
                   className={cn(
-                    "text-sm font-medium rounded-lg px-3 py-1.5 ring-1 transition-colors shrink-0",
+                    "text-sm font-medium rounded-lg px-3 py-1.5 ring-1 transition-colors",
                     filter === f.id
                       ? "bg-foreground text-background ring-foreground"
                       : "bg-card text-muted-foreground ring-border hover:text-foreground",

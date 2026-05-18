@@ -83,7 +83,7 @@ export function ChatPanel({ messages, profile, busy, opportunityChips, onSend, o
   const lastAssistant = [...messages].reverse().find((m) => m.role === "assistant");
 
   return (
-    <div className="flex flex-col h-full min-h-[min(480px,65dvh)] sm:min-h-[480px] glass-panel rounded-2xl overflow-hidden border border-border/80">
+    <div className="flex flex-col h-full min-h-[480px] glass-panel rounded-2xl overflow-hidden border border-border/80">
       <div className="flex items-center gap-3 px-4 py-3 border-b border-border/80 bg-card/50">
         <AiOrb size="sm" />
         <div className="flex-1 min-w-0">
@@ -110,7 +110,7 @@ export function ChatPanel({ messages, profile, busy, opportunityChips, onSend, o
             {m.role === "assistant" ? <AiOrb size="sm" className="shrink-0 mt-1" /> : null}
             <div
               className={cn(
-                "max-w-[min(85%,100%)] sm:max-w-[85%] rounded-2xl px-3 sm:px-4 py-2.5 sm:py-3 text-sm leading-relaxed whitespace-pre-wrap break-words",
+                "max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap",
                 m.role === "user"
                   ? "bg-foreground text-background rounded-br-md"
                   : "glass-panel rounded-bl-md text-foreground",

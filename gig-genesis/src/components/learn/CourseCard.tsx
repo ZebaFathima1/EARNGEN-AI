@@ -21,9 +21,7 @@ export function CourseCard({
       className={cn(
         "group relative shrink-0 overflow-hidden rounded-2xl border border-border/60 bg-card/40 backdrop-blur-md transition-all duration-300",
         "hover:border-brand/40 hover:shadow-[0_0_40px_-12px_var(--color-brand)]",
-        compact
-          ? "w-[min(220px,78vw)]"
-          : "w-[min(280px,85vw)] sm:w-[280px]",
+        compact ? "w-[220px]" : "w-[280px]",
       )}
     >
       <div className="relative aspect-video overflow-hidden">

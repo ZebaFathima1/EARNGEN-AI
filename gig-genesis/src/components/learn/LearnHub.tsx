@@ -75,7 +75,7 @@ export function LearnHub() {
         </div>
       </FeatureHero>
 
-      <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-8">
+      <section className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-8">
         {[
           { icon: Zap, label: "XP", value: String(g.xp) },
           { icon: Flame, label: "Streak", value: `${g.streakDays}d` },
@@ -102,9 +102,9 @@ export function LearnHub() {
               <span className="text-muted-foreground">Next skill: </span>
               <span className="font-semibold text-brand">{dashboard.nextSkill}</span>
             </p>
-            <p className="text-xs text-muted-foreground flex items-start gap-1 line-clamp-3 sm:line-clamp-none">
-              <TrendingUp className="size-3.5 shrink-0 mt-0.5" />
-              <span>Top creators: {creators.slice(0, 3).join(" · ")}</span>
+            <p className="text-xs text-muted-foreground flex items-center gap-1">
+              <TrendingUp className="size-3.5" />
+              Top creators for you: {creators.slice(0, 3).join(" · ")}
             </p>
           </div>
         </GlassCard>
@@ -154,12 +154,12 @@ export function LearnHub() {
 
       <section className="mb-6">
         <p className="text-sm font-semibold mb-3">Browse by category</p>
-        <div className="scroll-x-mobile flex flex-nowrap sm:flex-wrap gap-2 pb-1 -mx-1 px-1">
+        <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setCategory("all")}
             className={cn(
-              "rounded-full px-3 py-1 text-xs font-medium border transition shrink-0",
+              "rounded-full px-3 py-1 text-xs font-medium border transition",
               category === "all" ? "bg-brand text-white border-brand" : "border-border hover:border-brand/50",
             )}
           >
@@ -171,7 +171,7 @@ export function LearnHub() {
               type="button"
               onClick={() => setCategory(cat)}
               className={cn(
-                "rounded-full px-3 py-1 text-xs font-medium border transition shrink-0",
+                "rounded-full px-3 py-1 text-xs font-medium border transition",
                 category === cat ? "bg-brand text-white border-brand" : "border-border hover:border-brand/50",
               )}
             >

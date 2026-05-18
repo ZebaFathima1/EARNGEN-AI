@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useIsDesktop } from "@/lib/use-media-query";
 import { useServerFn } from "@tanstack/react-start";
 import { speakWithAi } from "@/lib/chat.functions";
 import { useAiCoachState } from "@/lib/ai-coach/store";
@@ -17,8 +16,7 @@ export function AiCoachExperience() {
   const { state, completeOnboarding, setMessages, resetOnboarding } = useAiCoachState();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const isDesktop = useIsDesktop();
-  const [panelOpen, setPanelOpen] = useState(isDesktop);
+  const [panelOpen, setPanelOpen] = useState(true);
 
   const recommendations = useMemo(
     () => (state.onboardingComplete ? buildRecommendations(state.profile, me.city || "India", me.name || "Student") : null),
@@ -106,8 +104,8 @@ export function AiCoachExperience() {
       </div>
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-3 sm:px-4 py-4 sm:py-6">
-        <header className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between gap-4 mb-4 fade-up">
-          <div className="flex items-center gap-3 min-w-0">
+        <header className="flex flex-wrap items-center justify-between gap-4 mb-4 fade-up">
+          <div className="flex items-center gap-3">
             <AiOrb size="md" />
             <div>
               <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand">AI career command center</p>
@@ -115,14 +113,7 @@ export function AiCoachExperience() {
               <p className="text-sm text-muted-foreground">Mentor · strategist · opportunity finder</p>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={() => setPanelOpen((v) => !v)}
-              className="lg:hidden inline-flex items-center gap-2 text-xs font-semibold rounded-xl ring-1 ring-brand/40 bg-brand/10 text-brand px-3 py-2"
-            >
-              {panelOpen ? "Hide insights" : "Show opportunities"}
-            </button>
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setPanelOpen((v) => !v)}
@@ -136,9 +127,7 @@ export function AiCoachExperience() {
               onClick={resetOnboarding}
               className="inline-flex items-center gap-2 text-xs font-semibold rounded-xl ring-1 ring-border px-3 py-2 hover:bg-muted text-muted-foreground"
             >
-              <RotateCcw className="size-4" />
-              <span className="hidden sm:inline">Retake onboarding</span>
-              <span className="sm:hidden">Reset</span>
+              <RotateCcw className="size-4" /> Retake onboarding
             </button>
           </div>
         </header>

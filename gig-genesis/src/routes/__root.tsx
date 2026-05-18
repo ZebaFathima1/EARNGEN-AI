@@ -51,8 +51,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#0d1117" },
-      { name: "color-scheme", content: "dark" },
       { title: "EARNGEN-AI — Turn your skills into verified income" },
       { name: "description", content: "AI-powered skill-to-income engine for students. Get a real-time 7-day plan, track earnings, and mint verified proof-of-work." },
       { property: "og:title", content: "EARNGEN-AI — Skill-to-Income Engine" },
@@ -74,9 +72,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en">
       <head><HeadContent /></head>
-      <body className="antialiased">{children}<Scripts /></body>
+      <body>{children}<Scripts /></body>
     </html>
   );
 }

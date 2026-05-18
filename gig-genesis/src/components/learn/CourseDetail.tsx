@@ -92,8 +92,8 @@ export function CourseDetail({ courseId }: { courseId: string }) {
         <div className="xl:col-span-2 space-y-6">
           <div>
             <p className="text-xs text-brand font-semibold uppercase tracking-wider">{course.category}</p>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight mt-1 text-pretty">{course.title}</h1>
-            <p className="text-muted-foreground mt-1 text-sm sm:text-base flex flex-wrap gap-x-1 gap-y-0.5">
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight mt-1">{course.title}</h1>
+            <p className="text-muted-foreground mt-1">
               {course.creator} · {course.difficulty} · {course.durationHours}h · {course.views} views
             </p>
             {scored && (
@@ -112,7 +112,7 @@ export function CourseDetail({ courseId }: { courseId: string }) {
             />
           )}
 
-          <div className="flex flex-col sm:flex-row flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2">
             {!isEnrolled ? (
               <button
                 type="button"

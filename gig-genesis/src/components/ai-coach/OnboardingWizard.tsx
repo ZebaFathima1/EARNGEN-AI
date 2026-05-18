@@ -62,7 +62,7 @@ export function OnboardingWizard({ onComplete }: Props) {
   const progress = ((step + 1) / STEPS.length) * 100;
 
   return (
-    <div className="min-h-[calc(100dvh-4rem)] ai-mesh-bg flex flex-col items-center justify-center px-3 sm:px-4 py-8 sm:py-10 relative overflow-hidden">
+    <div className="min-h-[calc(100dvh-4rem)] ai-mesh-bg flex flex-col items-center justify-center px-4 py-10 relative overflow-hidden">
       {[...Array(6)].map((_, i) => (
         <span
           key={i}

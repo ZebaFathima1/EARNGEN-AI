@@ -24,7 +24,7 @@ export function CourseCarousel({
         <h2 className="text-xl font-semibold tracking-tight">{title}</h2>
         {subtitle && <p className="text-sm text-muted-foreground mt-0.5">{subtitle}</p>}
       </div>
-      <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin mobile-bleed-x -mx-0 sm:mx-0 px-0 sm:px-0">
+      <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin">
         {courses.map((c) => (
           <div key={c.id} className="snap-start">
             <CourseCard

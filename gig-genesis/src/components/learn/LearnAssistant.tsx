@@ -58,7 +58,7 @@ export function LearnAssistant({
   }
 
   return (
-    <GlassCard className="flex flex-col h-[min(420px,70dvh)] sm:h-[480px]">
+    <GlassCard className="flex flex-col h-[420px] md:h-[480px]">
       <div className="flex items-center gap-2 border-b border-border/50 px-4 py-3">
         <Bot className="size-5 text-brand" />
         <div>

@@ -57,7 +57,7 @@ export function RecommendationDashboard({ data, collapsed, onToggle }: Props) {
   const expanded = data.opportunityMatches.find((o) => o.id === expandedId);
 
   return (
-    <aside className="space-y-4 overflow-y-auto max-h-none lg:max-h-[calc(100dvh-5rem)] pr-1 pb-10 scrollbar-thin">
+    <aside className="space-y-4 overflow-y-auto max-h-[calc(100dvh-5rem)] pr-1 pb-10 scrollbar-thin">
       {/* Hero metrics */}
       <div className="glass-panel rounded-2xl p-5 ring-1 ring-brand/25 bg-gradient-to-br from-brand/10 via-card/80 to-chart-2/5 relative overflow-hidden">
         <div className="absolute -right-8 -top-8 size-32 rounded-full bg-brand/20 blur-3xl pointer-events-none" />
