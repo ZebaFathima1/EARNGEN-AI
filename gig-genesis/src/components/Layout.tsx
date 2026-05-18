@@ -7,6 +7,8 @@ import logoUrl from "@/assets/logo.png";
 const NAV_AUTH = [
   { to: "/speak-with-ai", label: "Speak with AI" },
   { to: "/dashboard", label: "Dashboard" },
+  { to: "/network", label: "Network" },
+  { to: "/learn", label: "Learn" },
   { to: "/opportunities", label: "Opportunities" },
   { to: "/sprint", label: "7-Day Sprint" },
   { to: "/income", label: "Income" },
@@ -14,7 +16,7 @@ const NAV_AUTH = [
   { to: "/profile", label: "Profile" },
 ] as const;
 
-export function Shell({ children }: { children?: ReactNode }) {
+export function Shell({ children, immersive }: { children?: ReactNode; immersive?: boolean }) {
   const path = useRouterState({ select: (r) => r.location.pathname });
   const [open, setOpen] = useState(false);
   const { user, profile, avatarUrl, signOut, loading } = useAuth();
@@ -30,7 +32,7 @@ export function Shell({ children }: { children?: ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen min-h-[100dvh] bg-background text-foreground overflow-x-hidden">
       {!loading && !user && (
         <div className="bg-brand/10 text-brand text-xs text-center py-2 px-4 font-medium">
           Sign in to use AI (roadmap, sprint, and chat).{" "}
@@ -39,12 +41,12 @@ export function Shell({ children }: { children?: ReactNode }) {
           </Link>
         </div>
       )}
-      <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Link to={homeHref} className="font-semibold tracking-tight text-lg text-brand inline-flex items-center gap-2">
-              <img src={logoUrl} alt="EARNGEN-AI logo" width={40} height={40} className="size-10" />
-              <span>
+      <nav className="sticky top-0 z-50 border-b border-border/80 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-8 min-w-0">
+            <Link to={homeHref} className="font-semibold tracking-tight text-base sm:text-lg text-brand inline-flex items-center gap-1.5 sm:gap-2 shrink-0">
+              <img src={logoUrl} alt="EARNGEN-AI logo" width={40} height={40} className="size-8 sm:size-10" />
+              <span className="truncate max-w-[9rem] sm:max-w-none">
                 EARNGEN<span className="text-foreground">-AI</span>
               </span>
             </Link>
@@ -108,8 +110,8 @@ export function Shell({ children }: { children?: ReactNode }) {
           </div>
         </div>
         {open ? (
-          <div className="md:hidden border-t border-border bg-background">
-            <div className="px-4 py-3 flex flex-col gap-1">
+          <div className="md:hidden border-t border-border bg-background max-h-[min(70dvh,520px)] overflow-y-auto overscroll-contain">
+            <div className="px-3 sm:px-4 py-3 flex flex-col gap-1 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
               {user
                 ? NAV_AUTH.map((n) => {
                     const active = path === n.to || path.startsWith(n.to);
@@ -150,9 +152,17 @@ export function Shell({ children }: { children?: ReactNode }) {
         ) : null}
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10">{children ?? <Outlet />}</main>
+      <main
+        className={
+          immersive
+            ? "min-h-[calc(100dvh-4rem)]"
+            : "max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-10 pb-[max(1.5rem,env(safe-area-inset-bottom))]"
+        }
+      >
+        {children ?? <Outlet />}
+      </main>
 
-      <footer className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-12 mt-8 sm:mt-12 border-t border-border">
+      <footer className="max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-12 mt-6 sm:mt-12 border-t border-border">
         <div className="flex flex-col md:flex-row justify-between gap-8">
           <div className="max-w-[42ch]">
             <p className="text-sm font-semibold mb-2 inline-flex items-center gap-2">
@@ -163,13 +173,16 @@ export function Shell({ children }: { children?: ReactNode }) {
               The income operating system for student earners. Verified skills. Verified results.
             </p>
           </div>
-          <div className="flex gap-12 text-sm">
+          <div className="grid grid-cols-2 gap-8 sm:flex sm:gap-12 text-sm w-full sm:w-auto">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Product</p>
               {user ? (
                 <>
                   <Link to="/speak-with-ai" className="block text-muted-foreground hover:text-foreground">
                     Speak with AI
+                  </Link>
+                  <Link to="/network" className="block text-muted-foreground hover:text-foreground">
+                    Network Hub
                   </Link>
                   <Link to="/opportunities" className="block text-muted-foreground hover:text-foreground">
                     Opportunities

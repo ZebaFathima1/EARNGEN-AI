@@ -5,6 +5,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { Shell, Card } from "@/components/Layout";
 import { RequireAuth } from "@/components/RequireAuth";
 import { useAppState } from "@/lib/store";
+import { useSyncWorkRewards } from "@/lib/platform/useSyncWorkRewards";
+import { usePlatformState } from "@/lib/platform/store";
+import { POINTS } from "@/lib/platform/points-rules";
 import { suggestGigs, gigApplyLinks } from "@/lib/ai";
 import { useDisplayUser } from "@/lib/useDisplayUser";
 import { generateRoadmap } from "@/lib/roadmap.functions";
@@ -20,7 +23,9 @@ export const Route = createFileRoute("/sprint")({
 });
 
 function Sprint() {
+  useSyncWorkRewards();
   const { state, toggleDay } = useAppState();
+  const { state: platform } = usePlatformState();
   const me = useDisplayUser();
   const [copied, setCopied] = useState<string | null>(null);
   const fetchRoadmap = useServerFn(generateRoadmap);
@@ -100,6 +105,9 @@ function Sprint() {
           <div className="h-2 rounded-full bg-muted overflow-hidden">
             <div className="h-full bg-brand transition-all" style={{ width: `${pct}%` }} />
           </div>
+          <p className="text-[11px] text-brand mt-2 font-medium">
+            +{POINTS.sprintDay.points} pts per day completed · +{POINTS.sprintComplete.points} pts when all 7 done · {platform.rewardPoints} pts total
+          </p>
           <div className="flex items-center gap-3 mt-3 text-[11px] text-muted-foreground">
             {isLoading || isFetching ? (
               <span className="inline-flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-brand pulse-dot" /> AI is generating your plan in real time…</span>

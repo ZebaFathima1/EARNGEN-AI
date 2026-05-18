@@ -54,15 +54,15 @@ function Index() {
 
   return (
     <Shell>
-      <section className="pt-8 pb-16 fade-up">
+      <section className="pt-4 sm:pt-8 pb-12 sm:pb-16 fade-up">
         <div className="inline-flex items-center gap-2 rounded-full bg-brand/10 ring-1 ring-brand/20 px-3 py-1 mb-6">
           <span className="size-1.5 rounded-full bg-brand pulse-dot" />
           <span className="text-xs font-medium text-brand">AI-powered · Live</span>
         </div>
-        <h1 className="text-4xl md:text-6xl font-semibold tracking-tight text-balance max-w-[20ch]">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-semibold tracking-tight text-balance max-w-[20ch]">
           Turn your skill stack into <span className="text-brand">verified income.</span>
         </h1>
-        <p className="text-lg text-muted-foreground mt-6 max-w-[58ch] text-pretty">
+        <p className="text-base sm:text-lg text-muted-foreground mt-4 sm:mt-6 max-w-[58ch] text-pretty">
           After you sign in, you can generate a personalized 7-day roadmap, run sprints, and chat with AI about your ideas. The model name above is what the app will use once you are signed in.
         </p>
 
@@ -165,9 +165,9 @@ function Index() {
         </div>
       </section>
 
-      <section className="mb-20 rounded-3xl bg-foreground text-background p-10 md:p-16">
+      <section className="mb-20 rounded-2xl sm:rounded-3xl bg-foreground text-background p-6 sm:p-10 md:p-16">
         <p className="text-xs font-semibold tracking-widest uppercase text-brand-light">For Recruiters</p>
-        <h2 className="text-3xl md:text-4xl font-semibold tracking-tight mt-3 max-w-[24ch]">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight mt-3 max-w-[24ch]">
           Stop guessing from CVs. See verified work history.
         </h2>
         <p className="text-background/70 mt-4 max-w-[60ch] text-pretty">

@@ -1,5 +1,6 @@
 // Lightweight localStorage-backed store with React subscription.
 import { useEffect, useState } from "react";
+import { awardIncomeLogged, awardSprintComplete, awardSprintDay } from "@/lib/platform/award-work";
 
 export type IncomeEntry = {
   id: string;
@@ -78,8 +79,10 @@ export function useAppState() {
     },
     addIncome(entry: Omit<IncomeEntry, "id">) {
       const next = read();
-      next.income = [{ ...entry, id: crypto.randomUUID() }, ...next.income];
+      const id = crypto.randomUUID();
+      next.income = [{ ...entry, id }, ...next.income];
       write(next);
+      awardIncomeLogged(id, entry.amount, entry.project);
     },
     removeIncome(id: string) {
       const next = read();
@@ -95,10 +98,19 @@ export function useAppState() {
       const next = read();
       if (!next.sprint) return;
       const set = new Set(next.sprint.completedDays);
-      if (set.has(day)) set.delete(day);
+      const wasDone = set.has(day);
+      if (wasDone) set.delete(day);
       else set.add(day);
       next.sprint.completedDays = Array.from(set).sort((a, b) => a - b);
       write(next);
+
+      if (!wasDone && set.has(day)) {
+        const key = next.sprint.startedAt;
+        awardSprintDay(key, day, next.sprint.gigTitle);
+        if (next.sprint.completedDays.length >= 7) {
+          awardSprintComplete(key, next.sprint.gigTitle);
+        }
+      }
     },
     reset() {
       write(seed);

@@ -3,6 +3,9 @@ import { useMemo, useState } from "react";
 import { Shell, Card } from "@/components/Layout";
 import { RequireAuth } from "@/components/RequireAuth";
 import { useAppState, totalEarned } from "@/lib/store";
+import { usePlatformState } from "@/lib/platform/store";
+import { useSyncWorkRewards } from "@/lib/platform/useSyncWorkRewards";
+import { pointsForIncome } from "@/lib/platform/points-rules";
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell } from "recharts";
 
 export const Route = createFileRoute("/income")({
@@ -16,8 +19,11 @@ export const Route = createFileRoute("/income")({
 });
 
 function Income() {
+  useSyncWorkRewards();
   const { state, addIncome, removeIncome } = useAppState();
+  const { state: platform } = usePlatformState();
   const [form, setForm] = useState({ amount: "", project: "", client: "", platform: "WhatsApp", skill: state.skills[0] ?? "Canva" });
+  const previewPts = form.amount ? pointsForIncome(parseInt(form.amount, 10) || 0).points : 0;
 
   const total = totalEarned(state.income);
   const avg = state.income.length ? Math.round(total / state.income.length) : 0;
@@ -46,7 +52,9 @@ function Income() {
       <RequireAuth>
       <header className="mb-8 fade-up">
         <h1 className="text-3xl font-semibold tracking-tight">Income Ledger</h1>
-        <p className="text-muted-foreground mt-2">Every entry becomes a verified Proof-of-Work record.</p>
+        <p className="text-muted-foreground mt-2">
+          Every entry becomes verified Proof-of-Work and earns reward points ({platform.rewardPoints} pts balance).
+        </p>
       </header>
 
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -85,6 +93,9 @@ function Income() {
               <Field label="Platform"><select value={form.platform} onChange={(e) => setForm({ ...form, platform: e.target.value })} className="w-full bg-muted rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-brand">{["WhatsApp", "Instagram DM", "Fiverr", "Upwork", "LinkedIn", "Email", "Direct"].map((p) => <option key={p}>{p}</option>)}</select></Field>
               <Field label="Skill"><select value={form.skill} onChange={(e) => setForm({ ...form, skill: e.target.value })} className="w-full bg-muted rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-brand">{state.skills.map((s) => <option key={s}>{s}</option>)}</select></Field>
             </div>
+            {previewPts > 0 ? (
+              <p className="text-xs text-brand font-semibold">You will earn +{previewPts} reward points for this entry</p>
+            ) : null}
             <button type="submit" className="w-full bg-brand text-brand-foreground font-semibold py-2.5 rounded-lg hover:brightness-105">Log + mint proof →</button>
           </form>
         </Card>

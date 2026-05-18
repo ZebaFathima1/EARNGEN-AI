@@ -1,8 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef } from "react";
 import { Shell, Card } from "@/components/Layout";
 import { RequireAuth } from "@/components/RequireAuth";
 import { useAuth } from "@/lib/auth";
+import { usePlatformState } from "@/lib/platform/store";
+import { BADGES } from "@/lib/platform/mock-data";
+import { XpBar } from "@/components/platform/XpBar";
 import { User, Mail, GraduationCap, MapPin, CheckCircle, AlertCircle, Camera, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/profile")({
@@ -17,6 +20,8 @@ export const Route = createFileRoute("/profile")({
 
 function ProfilePage() {
   const { user, profile, avatarUrl, updateProfile, uploadAvatar, loading } = useAuth();
+  const { state: platform } = usePlatformState();
+  const g = platform.gamification;
   const [form, setForm] = useState({ full_name: "", college: "", city: "" });
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -227,6 +232,31 @@ function ProfilePage() {
                 {busy ? "Saving…" : "Save changes"}
               </button>
             </form>
+          </Card>
+
+          <Card className="p-6 mt-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-semibold">Achievements & XP</h2>
+              <Link to="/exchange" className="text-sm font-semibold text-brand">View exchange →</Link>
+            </div>
+            <XpBar xp={g.xp} level={g.level} className="mb-4" />
+            <div className="flex flex-wrap gap-2">
+              {BADGES.map((b) => {
+                const earned = g.earnedBadgeIds.includes(b.id);
+                return (
+                  <span
+                    key={b.id}
+                    title={b.description}
+                    className={
+                      "inline-flex items-center gap-1.5 text-xs font-medium rounded-lg px-2.5 py-1.5 ring-1 " +
+                      (earned ? "bg-brand/10 text-brand ring-brand/20" : "bg-muted/50 text-muted-foreground ring-border opacity-50")
+                    }
+                  >
+                    {b.icon} {b.name}
+                  </span>
+                );
+              })}
+            </div>
           </Card>
         </div>
       </RequireAuth>

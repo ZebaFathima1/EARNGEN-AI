@@ -9,18 +9,31 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as SprintRouteImport } from './routes/sprint'
 import { Route as SpeakWithAiRouteImport } from './routes/speak-with-ai'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as RewardsRouteImport } from './routes/rewards'
 import { Route as ProofRouteImport } from './routes/proof'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities'
+import { Route as NetworkRouteImport } from './routes/network'
+import { Route as NearbyRouteImport } from './routes/nearby'
+import { Route as NdaRouteImport } from './routes/nda'
+import { Route as LearnRouteImport } from './routes/learn'
 import { Route as IncomeRouteImport } from './routes/income'
+import { Route as ExchangeRouteImport } from './routes/exchange'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as RUsernameRouteImport } from './routes/r.$username'
+import { Route as LearnCourseIdRouteImport } from './routes/learn.$courseId'
 
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SprintRoute = SprintRouteImport.update({
   id: '/sprint',
   path: '/sprint',
@@ -34,6 +47,11 @@ const SpeakWithAiRoute = SpeakWithAiRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RewardsRoute = RewardsRouteImport.update({
+  id: '/rewards',
+  path: '/rewards',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProofRoute = ProofRouteImport.update({
@@ -51,9 +69,34 @@ const OpportunitiesRoute = OpportunitiesRouteImport.update({
   path: '/opportunities',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NetworkRoute = NetworkRouteImport.update({
+  id: '/network',
+  path: '/network',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NearbyRoute = NearbyRouteImport.update({
+  id: '/nearby',
+  path: '/nearby',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NdaRoute = NdaRouteImport.update({
+  id: '/nda',
+  path: '/nda',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnRoute = LearnRouteImport.update({
+  id: '/learn',
+  path: '/learn',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IncomeRoute = IncomeRouteImport.update({
   id: '/income',
   path: '/income',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExchangeRoute = ExchangeRouteImport.update({
+  id: '/exchange',
+  path: '/exchange',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -76,31 +119,52 @@ const RUsernameRoute = RUsernameRouteImport.update({
   path: '/r/$username',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnCourseIdRoute = LearnCourseIdRouteImport.update({
+  id: '/$courseId',
+  path: '/$courseId',
+  getParentRoute: () => LearnRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/exchange': typeof ExchangeRoute
   '/income': typeof IncomeRoute
+  '/learn': typeof LearnRouteWithChildren
+  '/nda': typeof NdaRoute
+  '/nearby': typeof NearbyRoute
+  '/network': typeof NetworkRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
   '/proof': typeof ProofRoute
+  '/rewards': typeof RewardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/speak-with-ai': typeof SpeakWithAiRoute
   '/sprint': typeof SprintRoute
+  '/wallet': typeof WalletRoute
+  '/learn/$courseId': typeof LearnCourseIdRoute
   '/r/$username': typeof RUsernameRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/exchange': typeof ExchangeRoute
   '/income': typeof IncomeRoute
+  '/learn': typeof LearnRouteWithChildren
+  '/nda': typeof NdaRoute
+  '/nearby': typeof NearbyRoute
+  '/network': typeof NetworkRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
   '/proof': typeof ProofRoute
+  '/rewards': typeof RewardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/speak-with-ai': typeof SpeakWithAiRoute
   '/sprint': typeof SprintRoute
+  '/wallet': typeof WalletRoute
+  '/learn/$courseId': typeof LearnCourseIdRoute
   '/r/$username': typeof RUsernameRoute
 }
 export interface FileRoutesById {
@@ -108,13 +172,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/exchange': typeof ExchangeRoute
   '/income': typeof IncomeRoute
+  '/learn': typeof LearnRouteWithChildren
+  '/nda': typeof NdaRoute
+  '/nearby': typeof NearbyRoute
+  '/network': typeof NetworkRoute
   '/opportunities': typeof OpportunitiesRoute
   '/profile': typeof ProfileRoute
   '/proof': typeof ProofRoute
+  '/rewards': typeof RewardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/speak-with-ai': typeof SpeakWithAiRoute
   '/sprint': typeof SprintRoute
+  '/wallet': typeof WalletRoute
+  '/learn/$courseId': typeof LearnCourseIdRoute
   '/r/$username': typeof RUsernameRoute
 }
 export interface FileRouteTypes {
@@ -123,39 +195,63 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/exchange'
     | '/income'
+    | '/learn'
+    | '/nda'
+    | '/nearby'
+    | '/network'
     | '/opportunities'
     | '/profile'
     | '/proof'
+    | '/rewards'
     | '/sitemap.xml'
     | '/speak-with-ai'
     | '/sprint'
+    | '/wallet'
+    | '/learn/$courseId'
     | '/r/$username'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/exchange'
     | '/income'
+    | '/learn'
+    | '/nda'
+    | '/nearby'
+    | '/network'
     | '/opportunities'
     | '/profile'
     | '/proof'
+    | '/rewards'
     | '/sitemap.xml'
     | '/speak-with-ai'
     | '/sprint'
+    | '/wallet'
+    | '/learn/$courseId'
     | '/r/$username'
   id:
     | '__root__'
     | '/'
     | '/auth'
     | '/dashboard'
+    | '/exchange'
     | '/income'
+    | '/learn'
+    | '/nda'
+    | '/nearby'
+    | '/network'
     | '/opportunities'
     | '/profile'
     | '/proof'
+    | '/rewards'
     | '/sitemap.xml'
     | '/speak-with-ai'
     | '/sprint'
+    | '/wallet'
+    | '/learn/$courseId'
     | '/r/$username'
   fileRoutesById: FileRoutesById
 }
@@ -163,18 +259,32 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
+  ExchangeRoute: typeof ExchangeRoute
   IncomeRoute: typeof IncomeRoute
+  LearnRoute: typeof LearnRouteWithChildren
+  NdaRoute: typeof NdaRoute
+  NearbyRoute: typeof NearbyRoute
+  NetworkRoute: typeof NetworkRoute
   OpportunitiesRoute: typeof OpportunitiesRoute
   ProfileRoute: typeof ProfileRoute
   ProofRoute: typeof ProofRoute
+  RewardsRoute: typeof RewardsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SpeakWithAiRoute: typeof SpeakWithAiRoute
   SprintRoute: typeof SprintRoute
+  WalletRoute: typeof WalletRoute
   RUsernameRoute: typeof RUsernameRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sprint': {
       id: '/sprint'
       path: '/sprint'
@@ -194,6 +304,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rewards': {
+      id: '/rewards'
+      path: '/rewards'
+      fullPath: '/rewards'
+      preLoaderRoute: typeof RewardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/proof': {
@@ -217,11 +334,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OpportunitiesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/network': {
+      id: '/network'
+      path: '/network'
+      fullPath: '/network'
+      preLoaderRoute: typeof NetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nearby': {
+      id: '/nearby'
+      path: '/nearby'
+      fullPath: '/nearby'
+      preLoaderRoute: typeof NearbyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nda': {
+      id: '/nda'
+      path: '/nda'
+      fullPath: '/nda'
+      preLoaderRoute: typeof NdaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn': {
+      id: '/learn'
+      path: '/learn'
+      fullPath: '/learn'
+      preLoaderRoute: typeof LearnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/income': {
       id: '/income'
       path: '/income'
       fullPath: '/income'
       preLoaderRoute: typeof IncomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exchange': {
+      id: '/exchange'
+      path: '/exchange'
+      fullPath: '/exchange'
+      preLoaderRoute: typeof ExchangeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -252,20 +404,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RUsernameRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/$courseId': {
+      id: '/learn/$courseId'
+      path: '/$courseId'
+      fullPath: '/learn/$courseId'
+      preLoaderRoute: typeof LearnCourseIdRouteImport
+      parentRoute: typeof LearnRoute
+    }
   }
 }
+
+interface LearnRouteChildren {
+  LearnCourseIdRoute: typeof LearnCourseIdRoute
+}
+
+const LearnRouteChildren: LearnRouteChildren = {
+  LearnCourseIdRoute: LearnCourseIdRoute,
+}
+
+const LearnRouteWithChildren = LearnRoute._addFileChildren(LearnRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
+  ExchangeRoute: ExchangeRoute,
   IncomeRoute: IncomeRoute,
+  LearnRoute: LearnRouteWithChildren,
+  NdaRoute: NdaRoute,
+  NearbyRoute: NearbyRoute,
+  NetworkRoute: NetworkRoute,
   OpportunitiesRoute: OpportunitiesRoute,
   ProfileRoute: ProfileRoute,
   ProofRoute: ProofRoute,
+  RewardsRoute: RewardsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SpeakWithAiRoute: SpeakWithAiRoute,
   SprintRoute: SprintRoute,
+  WalletRoute: WalletRoute,
   RUsernameRoute: RUsernameRoute,
 }
 export const routeTree = rootRouteImport
